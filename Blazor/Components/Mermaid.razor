@@ -1,0 +1,15 @@
+@inject IJSRuntime JS
+<div id="@Id" class="mermaid">@Diagram</div>
+
+@code {
+    [Parameter] public string Diagram { get; set; } = string.Empty;
+    private string Id = "mermaid-" + Guid.NewGuid().ToString("N");
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !string.IsNullOrWhiteSpace(Diagram))
+        {
+            await JS.InvokeVoidAsync("initMermaid", $"#{Id}");
+        }
+    }
+}

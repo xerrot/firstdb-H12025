@@ -25,8 +25,7 @@ namespace KonsolApp
             if (dbService.TestConnection())
             {
                 Console.WriteLine("Forbindelse til databasen lykkedes!");
-                // Print alle tabeller i databasen
-                dbService.PrintAllTableNames();
+                dbService.PrintAllTableDetails();
             }
             else
             {

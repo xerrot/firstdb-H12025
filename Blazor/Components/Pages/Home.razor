@@ -4,32 +4,55 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Database status</h1>
-
-@if (isLoading)
-{
-    <p>Indlæser...</p>
-}
-else if (!isConnected)
-{
-    <p style="color:red;">Kunne ikke oprette forbindelse til databasen.</p>
-}
-else
-{
-    <p style="color:green;">Forbindelse til databasen lykkedes!</p>
-    <h3>Tabeller i databasen:</h3>
-    <ul>
-        @foreach (var table in tables)
-        {
-            <li>@table</li>
-        }
-    </ul>
-}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h1 class="card-title mb-4 text-center">
+                        <i class="fas fa-server"></i> Database status
+                    </h1>
+                    @if (isLoading)
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-spinner fa-spin"></i> Indlæser database-status...
+                        </div>
+                    }
+                    else if (!isConnected)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-times-circle"></i> Kunne ikke oprette forbindelse til databasen.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> Forbindelse til databasen lykkedes!
+                        </div>
+                        <h3><i class="fas fa-table"></i> Tabeller i databasen:</h3>
+                        <ul>
+                            @foreach (var table in tables)
+                            {
+                                <li><i class="fas fa-database"></i> @table</li>
+                            }
+                        </ul>
+                        <h3><i class="fas fa-project-diagram"></i> Database struktur</h3>
+                        @if (!string.IsNullOrEmpty(mermaidSchema))
+                        {
+                            <Mermaid Diagram="@mermaidSchema" />
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     private bool isConnected;
     private bool isLoading = true;
     private List<string> tables = new();
+    private string? mermaidSchema;
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,6 +60,7 @@ else
         if (isConnected)
         {
             tables = await DbService.GetAllTableNamesAsync();
+            mermaidSchema = await DbService.GetMermaidSchemaAsync();
         }
         isLoading = false;
     }
