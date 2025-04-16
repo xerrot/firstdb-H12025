@@ -1,0 +1,43 @@
+﻿@page "/"
+
+@inject Blazor.Services.DBService DbService
+
+<PageTitle>Home</PageTitle>
+
+<h1>Database status</h1>
+
+@if (isLoading)
+{
+    <p>Indlæser...</p>
+}
+else if (!isConnected)
+{
+    <p style="color:red;">Kunne ikke oprette forbindelse til databasen.</p>
+}
+else
+{
+    <p style="color:green;">Forbindelse til databasen lykkedes!</p>
+    <h3>Tabeller i databasen:</h3>
+    <ul>
+        @foreach (var table in tables)
+        {
+            <li>@table</li>
+        }
+    </ul>
+}
+
+@code {
+    private bool isConnected;
+    private bool isLoading = true;
+    private List<string> tables = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        isConnected = await DbService.TestConnectionAsync();
+        if (isConnected)
+        {
+            tables = await DbService.GetAllTableNamesAsync();
+        }
+        isLoading = false;
+    }
+}
