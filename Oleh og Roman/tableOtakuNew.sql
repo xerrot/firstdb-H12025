@@ -46,17 +46,17 @@ CREATE TABLE weapon_inventory (
 );
 
 CREATE TABLE shop_avatars (
-                              shop_item_id SERIAL PRIMARY KEY,
-                              avatar_id INTEGER REFERENCES avatars(avatar_id),
-                              price INTEGER CHECK(price >= 0),
-                              quantity INTEGER DEFAULT 1 CHECK(quantity >= 0)
+    shop_item_id SERIAL PRIMARY KEY,
+    avatar_id INTEGER REFERENCES avatars(avatar_id),
+    price INTEGER CHECK(price >= 0),
+    quantity INTEGER DEFAULT 1 CHECK(quantity >= 0)
 );
 
 CREATE TABLE shop_weapons (
-                              shop_item_id SERIAL PRIMARY KEY,
-                              weapon_id INTEGER REFERENCES weapons(weapon_id),
-                              price INTEGER CHECK(price >= 0),
-                              quantity INTEGER DEFAULT 1 CHECK(quantity >= 0)
+    shop_item_id SERIAL PRIMARY KEY,
+    weapon_id INTEGER REFERENCES weapons(weapon_id),
+    price INTEGER CHECK(price >= 0),
+    quantity INTEGER DEFAULT 1 CHECK(quantity >= 0)
 );
 
 CREATE table trades (
