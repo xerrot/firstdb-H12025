@@ -61,6 +61,8 @@ SELECT *
 FROM items
 WHERE item_type = 'Weapon';
 
+SELECT * FROM inventory WHERE user_id = 1;
+
 ---All avatars that the user does not have
 SELECT *
 FROM items
